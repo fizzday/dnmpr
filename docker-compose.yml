@@ -1,0 +1,32 @@
+version: "3"
+services:
+  nginx:
+    image: nginx:1.16-alpine
+    container_name: dnginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./conf/nginx/conf.d/:/etc/nginx/conf.d/:ro
+      - ./log/nginx/:/var/log/nginx/:rw
+      - ./www/:/var/www/:rw
+    working_dir: "/var/www"
+    environment:
+      - TZ=Asia/Shanghai
+    networks:
+      - default
+
+  php:
+    build: ./php
+    container_name: dphp
+    expose:
+      - "9000"
+    volumes:
+      - ./log/php/:/var/log/php/:rw
+      - ./www/:/var/www/:rw
+    working_dir: "/var/www"
+    networks:
+      - default
+
+networks:
+  default:
