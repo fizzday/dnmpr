@@ -15,9 +15,12 @@
 www/*
 !www/index.php
 !www/test.html
+!www/test/
 
 !*.gitkeep
 *.log
 *.DS_Store
 *.idea
 *Runtime
+mysql/data
+redis/data

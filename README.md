@@ -1,2 +1,2 @@
-# alpine-dockerfile
-dockerfile build on alpine linux
+# dnmp
+docker-compose build nginx-php-mysql on alpine linux
