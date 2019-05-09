@@ -1,84 +1,70 @@
 version: "3"
 services:
   nginx:
-    image: nginx:1.16-alpine
+    build: ./nginx/${nginx_version}/
     container_name: dnginx
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80
+      - 443:443
     volumes:
-      - ./conf/nginx/conf.d/:/etc/nginx/conf.d/:ro
-      #      - ./conf/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./log/nginx/:/var/log/nginx/:rw
-      - ./www/:/var/www/:rw
-    working_dir: "/var/www"
+      - ${nginx_conf}/conf.d/:/etc/nginx/conf.d/:ro
+      - ${nginx_conf}/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ${nginx_log}/:/var/log/nginx/:rw
+      - ${source_dir}/:/var/www/:rw
+    working_dir: /var/www
     environment:
-      - TZ=Asia/Shanghai
+      TZ: ${tz}
     networks:
       - default
 
   php:
-    build: ./php
-    container_name: dphp
-    expose:
-      - "9000"
+      build:
+        context: ./php/${php_version}
+        args:
+          PHPREDIS_VERSION: ${php_redis_version}
+      container_name: dphp
+      working_dir: /var/www
+      volumes:
+        - ${php_conf}/php.ini:/usr/local/etc/php/php.ini:rw
+        - ${php_conf}/php-fpm.conf:/usr/local/etc/php-fpm.conf:rw
+        - ${php_conf}/www.conf:/usr/local/etc/conf.d/www.conf:rw
+        - ${php_log}/:/var/log/php/:rw
+        - ${source_dir}:/var/www/:rw
+      networks:
+        - default
+
+  redis:
+    build: ./redis/${redis_version}
+    container_name: dredis
     volumes:
-      - ./conf/php/php.ini:/usr/local/etc/php/php.ini:rw
-      - ./conf/php/php-fpm.conf:/usr/local/etc/php-fpm.conf:rw
-      - ./conf/php/www.conf:/usr/local/etc/conf.d/www.conf:rw
-      - ./log/php/:/var/log/php/:rw
-      - ./www/:/var/www/:rw
-    working_dir: "/var/www"
-    networks:
-      - default
-  mysql:
-    image: mysql:5.7
-    container_name: dmysql
-    volumes:
-      - ./mysql/data:/var/lib/mysql
-      - ./conf/mysql/my.cnf:/etc/mysql/my.cnf
-      - ./log/mysql:/var/log/mysql/
+      - ${redis_data}:/data
+      - ${redis_conf}/redis.conf:/usr/local/etc/redis/redis.conf
+      - ${redis_log}/:/var/log/redis/
     environment:
-      TZ: Asia/Shanghai
-      MYSQL_ROOT_PASSWORD: 123456
-    command: ['mysqld', '--character-set-server=utf8']
+      TZ: ${tz}
     restart: always
+    command: redis-server --requirepass ${redis_password}
     ports:
-      - "3306:3306"
+      - 6379:6379
     networks:
       - default
 
-  redis:
-    image: redis:5.0-alpine3.9
-    container_name: dredis
-    volumes:
-      - ./redis/data:/data
-      - ./conf/redis/redis.conf:/usr/local/etc/redis/redis.conf
-      - ./log/redis/:/var/log/redis/
-    environment:
-      TZ: Asia/Shanghai
+  mysql:
+    build: ./mysql/${mysql_version}
+    container_name: dmysql
+    command: ${mysql_cmd}
     restart: always
-    command: redis-server --requirepass 123456
     ports:
-      - "6379:6379"
+      - 3306:3306
+    volumes:
+      - ${mysql_data}:/var/lib/mysql
+      - ${mysql_conf}/my.cnf:/etc/mysql/my.cnf
+      - ${mysql_log}:/var/log/mysql/
+    environment:
+      TZ: ${tz}
+      MYSQL_ROOT_PASSWORD: ${mysql_password}
     networks:
       - default
-#  mysql:
-#    image: mysql:8.0
-#    container_name: dmysql
-#    command: --default-authentication-plugin=mysql_native_password
-#    restart: always
-#    ports:
-##      - "3306:33060"
-#      - "127.0.0.1:3306:3306"
-#      - "127.0.0.1:33060:33060"
-#    volumes:
-#      - ./mysql/data:/var/lib/mysql
-#    environment:
-#      TZ: Asia/Shanghai
-#      MYSQL_ROOT_PASSWORD: "123456"
-#    networks:
-#      - default
 
 networks:
   default:

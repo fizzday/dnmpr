@@ -11,6 +11,13 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+*.log
+*.DS_Store
+*.idea
+*Runtime
+
+mysql/*/data
+redis/*/data
 
 www/*
 !www/index.php
@@ -18,9 +25,3 @@ www/*
 !www/test/
 
 !*.gitkeep
-*.log
-*.DS_Store
-*.idea
-*Runtime
-mysql/data
-redis/data
