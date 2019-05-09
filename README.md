@@ -80,6 +80,9 @@ $ tree
     │   └── sqlite_pdo.php
     └── test.html
 ```
+- www: the source code of  your pro  
+- conf: config dir  
+- log: log dir  
 
 ## add redis server versions myself
 ### 1. make version dir and touch Dockerfile
