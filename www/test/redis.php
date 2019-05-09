@@ -14,6 +14,6 @@ $redis->auth('123456'); //密码验证
 
 $redis->select(1);//选择数据库2
 
-$redis->set( "testKey" , "Hello Redis"); //设置测试key
+$redis->set( "testKey" , "Hello Redis2"); //设置测试key
 
 echo $redis->get("testKey");//输出value

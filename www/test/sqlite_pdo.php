@@ -7,8 +7,6 @@
  */
 $dsn = 'sqlite:sqlite.db';
 try {
-    //$dbh = new PDO($dsn, $user, $password);　 //建立连接
-    // $dbh = new PDO('sqlite:yourdatabase.db');
     $dbh = new PDO($dsn);
     echo 'Create Db ok';
     //建表
@@ -29,5 +27,3 @@ try {
 }
 // 释放资源
 unset($dbh);
-// 释放资源方法2
-//$dbh = null;
