@@ -25,3 +25,5 @@ www/*
 !www/test/
 
 !*.gitkeep
+
+.env
