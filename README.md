@@ -133,14 +133,11 @@ mkdir -p ~/docker/dnmp/php/composer
 2. add command to `~.bashrc` as follow  
 ```bash
 composer () {
-    tty=
-    tty -s && tty=--tty
     docker run \
-        $tty \
-        --interactive \
+        -it \
         --rm \
         --user $(id -u):$(id -g) \
-        --volume ~/dnmp/composer:/tmp \
+        --volume ~/docker/dnmp/php/composer:/tmp \
         --volume /etc/passwd:/etc/passwd:ro \
         --volume /etc/group:/etc/group:ro \
         --volume $(pwd):/app \
