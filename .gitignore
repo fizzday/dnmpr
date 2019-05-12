@@ -18,6 +18,8 @@
 
 mysql/*/data
 redis/*/data
+conf/nginx/conf.d/*
+!conf/nginx/conf.d/default.conf
 
 www/*
 !www/index.php

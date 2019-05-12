@@ -168,3 +168,11 @@ composer create-project laravel/laravel mypro
     }
 }
 ```
+
+## direct cmd enter coker container
+```bash
+alias dnginx='docker exec -it dnginx /bin/sh'
+alias dphp='docker exec -it dphp /bin/sh'
+alias dmysql='docker exec -it dmysql /bin/bash'
+alias dredis='docker exec -it dredis /bin/sh'
+```
