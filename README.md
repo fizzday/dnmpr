@@ -10,10 +10,10 @@ do it yourself
 ### 3. install dnmp
 ```bash
 # download dnmp pro
-git clone https://github.com/fizzday/dnmp.git
+git clone https://github.com/fizzday/dnmp.git ~/docker/dnmp
 
 # you can choose version in .env file
-cd dnmp && cp env.example .env
+cd ~/docker/dnmp && cp env.example .env
 
 # boot background and auto build images
 docker-compose up -d
@@ -28,7 +28,7 @@ docker ps
 
 ## directories
 ```bash
-$ tree
+$ tree ~/docker/dnmp
 .
 ├── LICENSE
 ├── README.md
@@ -87,7 +87,7 @@ $ tree
 ## add redis server versions myself
 ### 1. make version dir and touch Dockerfile
 ```bash
-cd dnmp
+cd ~/docker/dnmp
 mkdir -p redis/4.0 && cd redis/4.0
 touch Dockerfile
 ```
@@ -107,7 +107,7 @@ redis_version=4.0
 ```
 ### 4. rebuild docker redis images
 ```bash
-cd dnmp
+cd ~/docker/dnmp
 docker-compose down
 docker rmi dnmp_redis:latest
 docker-compose up
@@ -123,3 +123,48 @@ Redis server v=4.0.14 sha=00000000:0 malloc=jemalloc-4.0.3 bits=64 build=357cb92
 ```
 
 wow, we have add a new server ourselves (^_^)
+
+## use php composer in host computer
+1. make a dir for composer's config and cache and pull a composer docker image  
+```bash
+docker pull composer
+mkdir -p ~/docker/dnmp/php/composer
+```
+2. add command to `~.bashrc` as follow  
+```bash
+composer () {
+    tty=
+    tty -s && tty=--tty
+    docker run \
+        $tty \
+        --interactive \
+        --rm \
+        --user $(id -u):$(id -g) \
+        --volume ~/dnmp/composer:/tmp \
+        --volume /etc/passwd:/etc/passwd:ro \
+        --volume /etc/group:/etc/group:ro \
+        --volume $(pwd):/app \
+        composer "$@"
+}
+```
+3. flash bashrc
+```bash
+source ~/.bashrc
+```
+4. use `composer` cmd in any project dir  
+```bash
+cd ~/docker/dnmp/www/
+composer create-project laravel/laravel mypro
+```
+5. you can also add mirror config yourself in `~/docker/dnmp/php/composer/config.json` as follow  
+```bash
+{
+    "config": {},
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.laravel-china.org"
+        }
+    }
+}
+```

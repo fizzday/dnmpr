@@ -27,3 +27,5 @@ www/*
 !*.gitkeep
 
 .env
+php/composer/*
+!php/composer/.gitkeep
