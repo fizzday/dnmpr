@@ -154,7 +154,7 @@ cd ~/docker/dnmp/www/
 composer create-project laravel/laravel mypro
 ```
 5. you can also add mirror config yourself in `~/docker/dnmp/php/composer/config.json` as follow  
-```bash
+```json
 {
     "config": {},
     "repositories": {
