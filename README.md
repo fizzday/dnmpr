@@ -80,9 +80,9 @@ $ tree ~/docker/dnmp
     │   └── sqlite_pdo.php
     └── test.html
 ```
-- www: the source code of  your pro  
-- conf: config dir  
-- log: log dir  
+- `www`: the source code of  your pro  
+- `conf`: config dir  
+- `log`: log dir  
 
 ## add redis server versions myself
 ### 1. make version dir and touch Dockerfile
@@ -103,6 +103,7 @@ LABEL maintainer="fizzday <fizzday@yeah.net>" \
 ```bash
 ...
 redis_version=4.0
+redis_data=./redis/4.0/data
 ...
 ```
 ### 4. rebuild docker redis images
@@ -130,7 +131,7 @@ wow, we have add a new server ourselves (^_^)
 docker pull composer
 mkdir -p ~/docker/dnmp/php/composer
 ```
-2. add command to `~.bashrc` as follow  
+2. add command to `~/.bashrc` as follow  
 ```bash
 composer () {
     docker run \
@@ -166,7 +167,7 @@ composer create-project laravel/laravel mypro
 }
 ```
 
-## direct cmd enter coker container
+## direct cmd enter docker container
 ```bash
 alias dnginx='docker exec -it dnginx /bin/sh'
 alias dphp='docker exec -it dphp /bin/sh'
