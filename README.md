@@ -1,6 +1,6 @@
-# dnmp
-docker-compose build nginx, redis, php, mysql on alpine linux with diffrent versions.  
-you can add other version with Simple configuration.  
+# dnmpr
+docker-compose build nginx, mysql, php, redis on alpine linux with diffrent versions. 
+you can add other version with Simple configuration.
 
 ## usage
 ### 1. install docker
@@ -11,10 +11,8 @@ do it yourself
 ```bash
 # download dnmp pro
 git clone https://github.com/fizzday/dnmp.git ~/docker/dnmp
-
 # you can choose version in .env file
 cd ~/docker/dnmp && cp env.example .env
-
 # boot background and auto build images
 docker-compose up -d
 ```
