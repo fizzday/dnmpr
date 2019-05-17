@@ -84,7 +84,7 @@ $ tree ~/docker/dnmp
 - `conf`: config dir  
 - `log`: log dir  
 
-## add redis server versions myself
+## add redis server versions yourself
 ### 1. make version dir and touch Dockerfile
 ```bash
 cd ~/docker/dnmp
@@ -173,4 +173,12 @@ alias dnginx='docker exec -it dnginx /bin/sh'
 alias dphp='docker exec -it dphp /bin/sh'
 alias dmysql='docker exec -it dmysql /bin/bash'
 alias dredis='docker exec -it dredis /bin/sh'
+```
+
+## 官方php镜像添加timezone和pdo_mysql,phpredis扩展后的镜像
+```bash
+# php 7.3, alpine 3.9
+registry.cn-hangzhou.aliyuncs.com/dnmpr/php:7.3-alpine3.9
+# php 5.6, alpine 3.8
+registry.cn-hangzhou.aliyuncs.com/dnmpr/php:5.6-alpine3.8
 ```
