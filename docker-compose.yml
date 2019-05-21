@@ -1,68 +1,96 @@
 version: "3"
 services:
-  nginx:
-    build: ./nginx/${nginx_version}/
-    container_name: dnginx
+#  nginx:
+#    build: ./nginx/${nginx_version}/
+#    container_name: dnginx
+#    ports:
+#      - 80:80
+#      - 443:443
+#    volumes:
+#      - ${nginx_conf}/conf.d/:/etc/nginx/conf.d/:ro
+#      - ${nginx_conf}/nginx.conf:/etc/nginx/nginx.conf:ro
+#      - ${nginx_log}/:/var/log/nginx/:rw
+#      - ${source_dir}/:/var/www/:rw
+#    working_dir: /var/www
+#    environment:
+#      TZ: ${tz}
+#    networks:
+#      - default
+
+#  php:
+#      image: registry.cn-hangzhou.aliyuncs.com/dnmpr/php:7.3-alpine3.9
+#      container_name: dphp
+#      working_dir: /var/www
+#      volumes:
+#        - ${php_conf}/php.ini:/usr/local/etc/php/php.ini:rw
+#        - ${php_conf}/php-fpm.conf:/usr/local/etc/php-fpm.conf:rw
+#        - ${php_conf}/www.conf:/usr/local/etc/conf.d/www.conf:rw
+#        - ${php_log}/:/var/log/php/:rw
+#        - ${source_dir}:/var/www/:rw
+#      networks:
+#        - default
+
+
+  #  php:
+#      build:
+#        context: ./php/${php_version}
+##        dockerfile: Dockerfile-php7.2
+#        args:
+#          PHPREDIS_VERSION: ${php_redis_version}
+#      container_name: dphp
+#      working_dir: /var/www
+#      volumes:
+#        - ${php_conf}/php.ini:/usr/local/etc/php/php.ini:rw
+#        - ${php_conf}/php-fpm.conf:/usr/local/etc/php-fpm.conf:rw
+#        - ${php_conf}/www.conf:/usr/local/etc/conf.d/www.conf:rw
+#        - ${php_log}/:/var/log/php/:rw
+#        - ${source_dir}:/var/www/:rw
+#      networks:
+#        - default
+
+#  redis:
+#    build: ./redis/${redis_version}
+#    container_name: dredis
+#    volumes:
+#      - ${redis_data}:/data
+#      - ${redis_conf}/redis.conf:/usr/local/etc/redis/redis.conf
+#      - ${redis_log}/:/var/log/redis/
+#    environment:
+#      TZ: ${tz}
+#    restart: always
+#    command: redis-server --requirepass ${redis_password}
+#    ports:
+#      - 6379:6379
+#    networks:
+#      - default
+#
+#  mysql:
+#    build: ./mysql/${mysql_version}
+#    container_name: dmysql
+#    command: ${mysql_cmd}
+#    restart: always
+#    ports:
+#      - 3306:3306
+#    volumes:
+#      - ${mysql_data}:/var/lib/mysql
+#      - ${mysql_conf}/my.cnf:/etc/mysql/my.cnf
+#      - ${mysql_log}:/var/log/mysql/
+#    environment:
+#      TZ: ${tz}
+#      MYSQL_ROOT_PASSWORD: ${mysql_password}
+#    networks:
+#      - default
+
+  vue:
+    build: ./node/vue/
+    container_name: dvue
     ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ${nginx_conf}/conf.d/:/etc/nginx/conf.d/:ro
-      - ${nginx_conf}/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ${nginx_log}/:/var/log/nginx/:rw
-      - ${source_dir}/:/var/www/:rw
+      - 8080:8080
     working_dir: /var/www
-    environment:
-      TZ: ${tz}
-    networks:
-      - default
-
-  php:
-      build:
-        context: ./php/${php_version}
-        args:
-          PHPREDIS_VERSION: ${php_redis_version}
-      container_name: dphp
-      working_dir: /var/www
-      volumes:
-        - ${php_conf}/php.ini:/usr/local/etc/php/php.ini:rw
-        - ${php_conf}/php-fpm.conf:/usr/local/etc/php-fpm.conf:rw
-        - ${php_conf}/www.conf:/usr/local/etc/conf.d/www.conf:rw
-        - ${php_log}/:/var/log/php/:rw
-        - ${source_dir}:/var/www/:rw
-      networks:
-        - default
-
-  redis:
-    build: ./redis/${redis_version}
-    container_name: dredis
     volumes:
-      - ${redis_data}:/data
-      - ${redis_conf}/redis.conf:/usr/local/etc/redis/redis.conf
-      - ${redis_log}/:/var/log/redis/
-    environment:
-      TZ: ${tz}
-    restart: always
-    command: redis-server --requirepass ${redis_password}
-    ports:
-      - 6379:6379
-    networks:
-      - default
-
-  mysql:
-    build: ./mysql/${mysql_version}
-    container_name: dmysql
-    command: ${mysql_cmd}
-    restart: always
-    ports:
-      - 3306:3306
-    volumes:
-      - ${mysql_data}:/var/lib/mysql
-      - ${mysql_conf}/my.cnf:/etc/mysql/my.cnf
-      - ${mysql_log}:/var/log/mysql/
-    environment:
-      TZ: ${tz}
-      MYSQL_ROOT_PASSWORD: ${mysql_password}
+      - "/Users/fizz/docker/www/vuedemo/:/var/www/"
+      - "/Users/fizz/www/nodejs/newnm/:/var/www/node_modules/"
+    command: sh -c "cnpm install && cnpm run serve"
     networks:
       - default
 
