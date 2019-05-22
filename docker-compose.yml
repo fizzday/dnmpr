@@ -1,37 +1,38 @@
 version: "3"
 services:
-#  nginx:
-#    build: ./nginx/${nginx_version}/
-#    container_name: dnginx
-#    ports:
-#      - 80:80
-#      - 443:443
-#    volumes:
-#      - ${nginx_conf}/conf.d/:/etc/nginx/conf.d/:ro
-#      - ${nginx_conf}/nginx.conf:/etc/nginx/nginx.conf:ro
-#      - ${nginx_log}/:/var/log/nginx/:rw
-#      - ${source_dir}/:/var/www/:rw
-#    working_dir: /var/www
-#    environment:
-#      TZ: ${tz}
-#    networks:
-#      - default
+  nginx:
+    build: ./nginx/${nginx_version}/
+    container_name: dnginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ${nginx_conf}/conf.d/:/etc/nginx/conf.d/:ro
+      - ${nginx_conf}/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ${nginx_log}/:/var/log/nginx/:rw
+      - ${source_dir}/:/var/www/:rw
+    working_dir: /var/www
+    environment:
+      TZ: ${tz}
+    depends_on:
+      - php
+    networks:
+      - default
 
-#  php:
-#      image: registry.cn-hangzhou.aliyuncs.com/dnmpr/php:7.3-alpine3.9
-#      container_name: dphp
-#      working_dir: /var/www
-#      volumes:
-#        - ${php_conf}/php.ini:/usr/local/etc/php/php.ini:rw
-#        - ${php_conf}/php-fpm.conf:/usr/local/etc/php-fpm.conf:rw
-#        - ${php_conf}/www.conf:/usr/local/etc/conf.d/www.conf:rw
-#        - ${php_log}/:/var/log/php/:rw
-#        - ${source_dir}:/var/www/:rw
-#      networks:
-#        - default
+  php:
+      image: registry.cn-hangzhou.aliyuncs.com/dnmpr/php:7.3-alpine3.9
+      container_name: dphp
+      working_dir: /var/www
+      volumes:
+        - ${php_conf}/php.ini:/usr/local/etc/php/php.ini:rw
+        - ${php_conf}/php-fpm.conf:/usr/local/etc/php-fpm.conf:rw
+        - ${php_conf}/www.conf:/usr/local/etc/conf.d/www.conf:rw
+        - ${php_log}/:/var/log/php/:rw
+        - ${source_dir}:/var/www/:rw
+      networks:
+        - default
 
-
-  #  php:
+#    php:
 #      build:
 #        context: ./php/${php_version}
 ##        dockerfile: Dockerfile-php7.2
@@ -81,18 +82,18 @@ services:
 #    networks:
 #      - default
 
-  vue:
-    build: ./node/vue/
-    container_name: dvue
-    ports:
-      - 8080:8080
-    working_dir: /var/www
-    volumes:
-      - "/Users/fizz/docker/www/vuedemo/:/var/www/"
-      - "/Users/fizz/www/nodejs/newnm/:/var/www/node_modules/"
-    command: sh -c "cnpm install && cnpm run serve"
-    networks:
-      - default
+#  vue:
+#    build: ./node/vue/
+#    container_name: dvue
+#    ports:
+#      - 8080:8080
+#    working_dir: /var/www
+#    volumes:
+#      - "/Users/fizz/docker/www/vuedemo/:/var/www/"
+#      - "/Users/fizz/www/nodejs/newnm/:/var/www/node_modules/"
+#    command: sh -c "cnpm install && cnpm run serve"
+#    networks:
+#      - default
 
 networks:
   default:
